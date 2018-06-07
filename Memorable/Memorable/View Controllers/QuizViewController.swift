@@ -87,7 +87,8 @@ class QuizViewController: UIViewController, UIPickerViewDataSource, UIPickerView
     
     func shuffleMemorablesInCategory() {
         self.quizMemorables = self.memorablesInCategory
-        self.quizMemorables.shuffle()
+        //self.quizMemorables.shuffle()
+        self.quizMemorables = self.shuffleMemorables(self.quizMemorables)
     }
     
     func setAnswers() {
@@ -101,7 +102,8 @@ class QuizViewController: UIViewController, UIPickerViewDataSource, UIPickerView
                 self.answers.append(memorable.body)
             }
         }
-        self.answers.shuffle()
+        self.answers = self.shuffleStringArray(self.answers)
+        //self.answers.shuffle()
     }
     
     func alert(title: String, message: String, dismissButtonText: String) {
@@ -137,9 +139,32 @@ class QuizViewController: UIViewController, UIPickerViewDataSource, UIPickerView
         }
         self.totalScore = self.memorablesInCategory.count
     }
+    
+    func shuffleStringArray(_ array: [String]) -> [String] {
+        var original = array
+        var shuffled = [String]()
+        for _ in 0..<original.count {
+            let rand = Int(arc4random_uniform(UInt32(original.count)))
+            shuffled.append(original[rand])
+            original.remove(at: rand)
+        }
+        return shuffled
+    }
+    
+    func shuffleMemorables(_ array: [Memorable]) -> [Memorable] {
+        var original = array
+        var shuffled = [Memorable]()
+        for _ in 0..<original.count {
+            let rand = Int(arc4random_uniform(UInt32(original.count)))
+            shuffled.append(original[rand])
+            original.remove(at: rand)
+        }
+        return shuffled
+    }
 
 }
 
+/*
 extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of this collection.
     mutating func shuffle() {
@@ -164,6 +189,7 @@ extension Sequence {
         return result
     }
 }
+*/
 
 /*
 extension MutableCollection {
@@ -189,4 +215,4 @@ extension Sequence {
         return result
     }
 }
- */
+*/
